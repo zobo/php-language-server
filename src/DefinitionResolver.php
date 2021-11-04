@@ -1169,7 +1169,7 @@ class DefinitionResolver
                 // Use PHP7 return type hint
                 $is_union = false;
                 $is_intersection = false;
-                $types = array_reduce( $node->returnTypeList->children, function ($types, $returnType) use ($node, &$is_union, &$is_intersection) {
+                $types = array_reduce($node->returnTypeList->children, function ($types, $returnType) use ($node, &$is_union, &$is_intersection) {
                     if ($returnType instanceof PhpParser\Token) {
                         if ($returnType->kind === PhpParser\TokenKind::BarToken) {
                             $is_union = true;
