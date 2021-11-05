@@ -590,7 +590,7 @@ class DefinitionResolver
                 if ($n instanceof Node\Expression\AnonymousFunctionCreationExpression &&
                     $n->anonymousFunctionUseClause !== null &&
                     $n->anonymousFunctionUseClause->useVariableNameList !== null &&
-                    $n->anonymousFunctionUseClause->useVariableNameList instanceof Node\UseVariableNameList) {
+                    $n->anonymousFunctionUseClause->useVariableNameList instanceof Node\DelimitedList\UseVariableNameList) {
                     foreach ($n->anonymousFunctionUseClause->useVariableNameList->getElements() as $use) {
                         if ($use->getName() === $name) {
                             return $use;
