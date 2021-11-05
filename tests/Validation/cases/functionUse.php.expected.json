@@ -2,9 +2,6 @@
     "references": {
         "A": [
             "./functionUse.php"
-        ],
-        "A->b()": [
-            "./functionUse.php"
         ]
     },
     "definitions": []

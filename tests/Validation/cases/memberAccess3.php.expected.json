@@ -9,9 +9,6 @@
         "Closure": [
             "./memberAccess3.php"
         ],
-        "MyNamespace\\ClassLoader->prefixesPsr0": [
-            "./memberAccess3.php"
-        ],
         "MyNamespace\\ComposerStaticInitIncludePath": [
             "./memberAccess3.php"
         ],
