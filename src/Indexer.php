@@ -152,11 +152,11 @@ class Indexer
             // Index source
             // Definitions and static references
             $this->client->window->logMessage(MessageType::INFO, 'Indexing project for definitions and static references');
-            yield $this->indexFiles($source);
+            yield $this->indexFiles($source, 'Indexing project for definitions and static references');
             $this->sourceIndex->setStaticComplete();
             // Dynamic references
             $this->client->window->logMessage(MessageType::INFO, 'Indexing project for dynamic references');
-            yield $this->indexFiles($source);
+            yield $this->indexFiles($source, 'Indexing project for dynamic references');
             $this->sourceIndex->setComplete();
 
             // Index dependencies
@@ -188,12 +188,12 @@ class Indexer
 
                     // Index definitions and static references
                     $this->client->window->logMessage(MessageType::INFO, 'Indexing ' . ($packageKey ?? $packageName) . ' for definitions and static references');
-                    yield $this->indexFiles($files);
+                    yield $this->indexFiles($files, 'Indexing ' . ($packageKey ?? $packageName) . ' for definitions and static references');
                     $index->setStaticComplete();
 
                     // Index dynamic references
                     $this->client->window->logMessage(MessageType::INFO, 'Indexing ' . ($packageKey ?? $packageName) . ' for dynamic references');
-                    yield $this->indexFiles($files);
+                    yield $this->indexFiles($files, 'Indexing ' . ($packageKey ?? $packageName) . ' for dynamic references');
                     $index->setComplete();
 
                     // If we know the version (cache key), save index for the dependency in the cache
@@ -219,12 +219,12 @@ class Indexer
      * @param array $files
      * @return Promise
      */
-    private function indexFiles(array $files): Promise
+    private function indexFiles(array $files, string $progressTitle): Promise
     {
-        return coroutine(function () use ($files) {
+        return coroutine(function () use ($files, $progressTitle) {
             $workDoneProgress = null;
             if ($this->supportsWorkDoneProgress && $workDoneProgress = yield $this->client->window->createWorkDoneProgress()) {
-                $workDoneProgress->beginProgress('Indexing', "0/".count($files)." files", 0);
+                $workDoneProgress->beginProgress($progressTitle, "0/".count($files)." files", 0);
             }
 
             foreach ($files as $i => $uri) {
