@@ -250,7 +250,7 @@ class LanguageServer extends AdvancedJsonRpc\Dispatcher
                     $this->documentLoader,
                     $this->composerLock,
                     $this->composerJson,
-                    $capabilities->window->workDoneProgress
+                    $capabilities->window ? $capabilities->window->workDoneProgress : false
                 );
             }
 
@@ -315,7 +315,7 @@ class LanguageServer extends AdvancedJsonRpc\Dispatcher
      *
      * @return Promise <void>
      */
-    public function initialized(): Promise
+    public function initialized(): void
     {
         $this->client->window->logMessage(\LanguageServerProtocol\MessageType::INFO, "OK!");
         if ($this->indexer) {

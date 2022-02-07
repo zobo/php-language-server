@@ -222,6 +222,7 @@ class Indexer
     private function indexFiles(array $files): Promise
     {
         return coroutine(function () use ($files) {
+            $workDoneProgress = null;
             if ($this->supportsWorkDoneProgress && $workDoneProgress = yield $this->client->window->createWorkDoneProgress()) {
                 $workDoneProgress->beginProgress('Indexing', "0/".count($files)." files", 0);
             }
