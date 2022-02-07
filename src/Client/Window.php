@@ -46,10 +46,9 @@ class Window
         return $this->handler->notify('window/logMessage', ['type' => $type, 'message' => $message]);
     }
 
-
     /**
      * https://microsoft.github.io/language-server-protocol/specifications/specification-3-17/#window_workDoneProgress_create
-     * 
+     *
      * @return Promise <WorkDoneProgress>
      */
     public function createWorkDoneProgress(): Promise
@@ -62,7 +61,7 @@ class Window
         )->then(function ($result) use ($token) {
             // check result??
             return new WorkDoneProgress($this->handler, $token);
-        })->otherwise(function () { 
+        })->otherwise(function () {
             return null;
         });
     }

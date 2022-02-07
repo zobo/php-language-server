@@ -15,7 +15,7 @@ class WorkDoneProgress
 
     /**
      * ProgressToken
-     * 
+     *
      * @var string
      */
     private $token;
@@ -26,7 +26,7 @@ class WorkDoneProgress
         $this->token = $token;
     }
 
-    function beginProgress(string $title, string $message = null, int $percentage = null): Promise
+    public function beginProgress(string $title, string $message = null, int $percentage = null): Promise
     {
         return $this->handler->notify(
             '$/progress',
@@ -43,7 +43,7 @@ class WorkDoneProgress
         );
     }
 
-    function reportProgress(string $message = null, int $percentage = null): Promise
+    public function reportProgress(string $message = null, int $percentage = null): Promise
     {
         return $this->handler->notify(
             '$/progress',
@@ -59,7 +59,7 @@ class WorkDoneProgress
         );
     }
 
-    function endProgress(string $message = null): Promise
+    public function endProgress(string $message = null): Promise
     {
         return $this->handler->notify(
             '$/progress',
