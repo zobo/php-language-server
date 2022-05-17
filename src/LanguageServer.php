@@ -114,6 +114,13 @@ class LanguageServer extends AdvancedJsonRpc\Dispatcher
     protected $rootPath;
 
     /**
+     * Reported client capabilites
+     * 
+     * @var ClientCapabilities|null
+     */
+    protected ClientCapabilities $capabilities;
+
+    /**
      * The indexer
      *
      * @var Indexer
@@ -185,6 +192,7 @@ class LanguageServer extends AdvancedJsonRpc\Dispatcher
             $rootPath = uriToPath($rootUri);
         }
         $this->rootPath = $rootPath;
+        $this->capabilities = $capabilities;
         return coroutine(function () use ($capabilities, $rootPath, $processId) {
 
             if ($capabilities->xfilesProvider) {
@@ -198,6 +206,53 @@ class LanguageServer extends AdvancedJsonRpc\Dispatcher
             } else {
                 $this->contentRetriever = new FileSystemContentRetriever;
             }
+
+            $serverCapabilities = new ServerCapabilities();
+            // Ask the client to return always full documents (because we need to rebuild the AST from scratch)
+            $serverCapabilities->textDocumentSync = TextDocumentSyncKind::FULL;
+            // Support "Find all symbols"
+            $serverCapabilities->documentSymbolProvider = true;
+            // Support "Find all symbols in workspace"
+            $serverCapabilities->workspaceSymbolProvider = true;
+            // Support "Go to definition"
+            $serverCapabilities->definitionProvider = true;
+            // Support "Find all references"
+            $serverCapabilities->referencesProvider = true;
+            // Support "Hover"
+            $serverCapabilities->hoverProvider = true;
+            // Support "Completion"
+            $serverCapabilities->completionProvider = new CompletionOptions;
+            $serverCapabilities->completionProvider->resolveProvider = false;
+            $serverCapabilities->completionProvider->triggerCharacters = ['$', '>'];
+
+            $serverCapabilities->signatureHelpProvider = new SignatureHelpOptions();
+            $serverCapabilities->signatureHelpProvider->triggerCharacters = ['(', ','];
+
+            // Support global references
+            $serverCapabilities->xworkspaceReferencesProvider = true;
+            $serverCapabilities->xdefinitionProvider = true;
+            $serverCapabilities->xdependenciesProvider = true;
+
+            yield timeout();
+            return new InitializeResult($serverCapabilities);
+        });
+    }
+
+    /**
+     * The initialized notification is sent from the client to the server after the client received the
+     * result of the initialize request but before the client is sending any other request or notification
+     * to the server. The server can use the initialized notification for example to dynamically register
+     * capabilities. The initialized notification may only be sent once.
+     *
+     * @return Promise <void>
+     */
+    public function initialized(): Promise
+    {
+        $this->client->window->logMessage(\LanguageServerProtocol\MessageType::INFO, "initialized");
+
+        return coroutine(function () {
+            $rootPath = $this->rootPath;
+            $capabilities = $this->capabilities;
 
             $dependenciesIndex = new DependenciesIndex;
             $sourceIndex = new Index;
@@ -277,50 +332,10 @@ class LanguageServer extends AdvancedJsonRpc\Dispatcher
                 );
             }
 
-            $serverCapabilities = new ServerCapabilities();
-            // Ask the client to return always full documents (because we need to rebuild the AST from scratch)
-            $serverCapabilities->textDocumentSync = TextDocumentSyncKind::FULL;
-            // Support "Find all symbols"
-            $serverCapabilities->documentSymbolProvider = true;
-            // Support "Find all symbols in workspace"
-            $serverCapabilities->workspaceSymbolProvider = true;
-            // Support "Go to definition"
-            $serverCapabilities->definitionProvider = true;
-            // Support "Find all references"
-            $serverCapabilities->referencesProvider = true;
-            // Support "Hover"
-            $serverCapabilities->hoverProvider = true;
-            // Support "Completion"
-            $serverCapabilities->completionProvider = new CompletionOptions;
-            $serverCapabilities->completionProvider->resolveProvider = false;
-            $serverCapabilities->completionProvider->triggerCharacters = ['$', '>'];
-
-            $serverCapabilities->signatureHelpProvider = new SignatureHelpOptions();
-            $serverCapabilities->signatureHelpProvider->triggerCharacters = ['(', ','];
-
-            // Support global references
-            $serverCapabilities->xworkspaceReferencesProvider = true;
-            $serverCapabilities->xdefinitionProvider = true;
-            $serverCapabilities->xdependenciesProvider = true;
-
-            return new InitializeResult($serverCapabilities);
+            if ($this->indexer) {
+                $this->indexer->index()->otherwise('\\LanguageServer\\crash');
+            }
         });
-    }
-
-    /**
-     * The initialized notification is sent from the client to the server after the client received the
-     * result of the initialize request but before the client is sending any other request or notification
-     * to the server. The server can use the initialized notification for example to dynamically register
-     * capabilities. The initialized notification may only be sent once.
-     *
-     * @return Promise <void>
-     */
-    public function initialized(): void
-    {
-        $this->client->window->logMessage(\LanguageServerProtocol\MessageType::INFO, "OK!");
-        if ($this->indexer) {
-            $this->indexer->index()->otherwise('\\LanguageServer\\crash');
-        }
     }
 
     /**
