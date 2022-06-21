@@ -1167,6 +1167,16 @@ class DefinitionResolver
                     if ($selfType) {
                         return $selfType;
                     }
+                } elseif ($returnType instanceof Types\Static_) {
+                    $selfType = $this->getContainingClassType($node);
+                    if ($selfType) {
+                        return $selfType;
+                    }
+                } elseif ($returnType instanceof Types\Parent_) {
+                    $classNode = $node->getFirstAncestor(Node\Statement\ClassDeclaration::class);
+                    if ($classNode->classBaseClause !== null && $classNode->classBaseClause->baseClass !== null) {
+                        return new Types\Object_(new Fqsen('\\' . (string)$classNode->classBaseClause->baseClass->getResolvedName()));
+                    }
                 }
                 return $returnType;
             }
@@ -1191,6 +1201,18 @@ class DefinitionResolver
                         $selfType = $this->getContainingClassType($node);
                         if ($selfType !== null) {
                             $types[] = $selfType;
+                            return $types;
+                        }
+                    } elseif ($returnType->getResolvedName() === 'static') {
+                        $selfType = $this->getContainingClassType($node);
+                        if ($selfType !== null) {
+                            $types[] = $selfType;
+                            return $types;
+                        }
+                    } elseif ($returnType->getResolvedName() === 'parent') {
+                        $classNode = $node->getFirstAncestor(Node\Statement\ClassDeclaration::class);
+                        if ($classNode->classBaseClause !== null && $classNode->classBaseClause->baseClass !== null) {
+                            $types[] = new Types\Object_(new Fqsen('\\' . (string)$classNode->classBaseClause->baseClass->getResolvedName()));
                             return $types;
                         }
                     }
