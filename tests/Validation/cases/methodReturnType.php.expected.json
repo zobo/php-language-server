@@ -94,7 +94,7 @@
                 },
                 "containerName": "FooClass"
             },
-            "type__tostring": "\\FooClass",
+            "type__tostring": "static",
             "type": {},
             "declarationLine": "public function baz()",
             "documentation": "",

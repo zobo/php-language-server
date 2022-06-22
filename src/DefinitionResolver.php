@@ -783,7 +783,7 @@ class DefinitionResolver
                     foreach ($classDef->getAncestorDefinitions($this->index, true) as $fqn => $def) {
                         $def = $this->index->getDefinition($fqn . $add);
                         if ($def !== null) {
-                            if ($def->type instanceof Types\This || $def->type instanceof Types\Self_) {
+                            if ($def->type instanceof Types\This || $def->type instanceof Types\Self_ || $def->type instanceof Types\Static_) {
                                 return new Types\Object_(new Fqsen('\\' . $classFqn));
                             }
                             return $def->type;
@@ -1167,11 +1167,6 @@ class DefinitionResolver
                     if ($selfType) {
                         return $selfType;
                     }
-                } elseif ($returnType instanceof Types\Static_) {
-                    $selfType = $this->getContainingClassType($node);
-                    if ($selfType) {
-                        return $selfType;
-                    }
                 } elseif ($returnType instanceof Types\Parent_) {
                     $classNode = $node->getFirstAncestor(Node\Statement\ClassDeclaration::class);
                     if ($classNode->classBaseClause !== null && $classNode->classBaseClause->baseClass !== null) {
@@ -1198,12 +1193,6 @@ class DefinitionResolver
                         $types[] = $this->typeResolver->resolve($returnType->getText($node->getFileContents()));
                         return $types;
                     } elseif ($returnType->getResolvedName() === 'self') {
-                        $selfType = $this->getContainingClassType($node);
-                        if ($selfType !== null) {
-                            $types[] = $selfType;
-                            return $types;
-                        }
-                    } elseif ($returnType->getResolvedName() === 'static') {
                         $selfType = $this->getContainingClassType($node);
                         if ($selfType !== null) {
                             $types[] = $selfType;
