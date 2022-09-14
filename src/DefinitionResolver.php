@@ -326,6 +326,17 @@ class DefinitionResolver
         // TODO - verify that this is not a method
         $globalFallback = ParserHelpers\isConstantFetch($node) || $parent instanceof Node\Expression\CallExpression;
 
+        // Check special case parent::func() where we are actually accessing non-static parent member
+        if (
+            $node instanceof Node\Expression\ScopedPropertyAccessExpression
+            && $node->scopeResolutionQualifier->getText() === 'parent'
+        ) {
+            $def = $this->index->getDefinition(\str_replace('::', '->', $fqn));
+            if ($def !== null) {
+                return $def;
+            }
+        }
+
         // Return the Definition object from the index index
         return $this->index->getDefinition($fqn, $globalFallback);
     }
@@ -505,10 +516,10 @@ class DefinitionResolver
             }
             if ($className === 'parent') {
                 // parent is resolved to the parent class
-                if (!isset($classNode->extends)) {
+                if (!isset($classNode->classBaseClause) || !isset($classNode->classBaseClause->baseClass)) {
                     return null;
                 }
-                $className = (string)$classNode->extends->getResolvedName();
+                $className = (string)$classNode->classBaseClause->baseClass->getResolvedName();
             } else {
                 $className = (string)$classNode->getNamespacedName();
             }
