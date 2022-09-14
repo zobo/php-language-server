@@ -239,6 +239,17 @@ class DefinitionResolver
             }
         }
 
+        if ($node instanceof Node\Statement\ClassDeclaration &&
+            $node->classMembers !== null && $node->classMembers->classMemberDeclarations !== null) {
+            foreach ($node->classMembers->classMemberDeclarations as $dec) {
+                if ($dec instanceof Node\TraitUseClause) {
+                    foreach ($dec->traitNameList->getValues() as $n) {
+                        $def->extends[] = (string)$n->getNamespacedName();
+                    }
+                }
+            }
+        }
+
         $def->symbolInformation = SymbolInformationFactory::fromNode($node, $fqn);
 
         if ($def->symbolInformation !== null) {
