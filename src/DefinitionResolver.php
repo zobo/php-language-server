@@ -1249,6 +1249,16 @@ class DefinitionResolver
             return new Types\Mixed_;
         }
 
+        // ENUM
+        if (
+            ($node instanceof Node\EnumCaseDeclaration) &&
+            ($enumDeclaration = $node->parent->parent) &&
+            ($enumDeclaration instanceof Node\Statement\EnumDeclaration) &&
+            ($enumDeclaration->enumType)
+           ) {
+            return $this->typeResolver->resolve($enumDeclaration->enumType->getText($node->getFileContents()));
+        }
+
         // FOREACH KEY/VARIABLE
         if ($node instanceof Node\ForeachKey || $node->parent instanceof Node\ForeachKey) {
             $foreach = $node->getFirstAncestor(Node\Statement\ForeachStatement::class);
@@ -1447,6 +1457,20 @@ class DefinitionResolver
             }
             return (string)$classDeclaration->getNamespacedName() . '::' . $node->getName();
         }
+
+        // INPUT                        OUTPUT
+        // namespace A\B;
+        // enum C {
+        //   case A;                    A\B\C::A
+        // }
+        if (
+            ($node instanceof Node\EnumCaseDeclaration) &&
+            ($enumDeclaration = $node->parent->parent) &&
+            ($enumDeclaration instanceof Node\Statement\EnumDeclaration)
+           ) {
+            return (string)$enumDeclaration->getNamespacedName() . '::' . $node->name->getText($node->getFileContents());
+        }
+
 
         if (ParserHelpers\isConstDefineExpression($node)) {
             return $node->argumentExpressionList->children[0]->expression->getStringContentsText();
