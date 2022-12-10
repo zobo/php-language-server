@@ -12,7 +12,7 @@
                 "name": "MyNamespace",
                 "kind": 3,
                 "location": {
-                    "uri": "./enum2.php"
+                    "uri": ".81/enum2.php"
                 },
                 "containerName": ""
             },
@@ -32,7 +32,7 @@
                 "name": "Test2Enum",
                 "kind": 10,
                 "location": {
-                    "uri": "./enum2.php"
+                    "uri": ".81/enum2.php"
                 },
                 "containerName": "MyNamespace"
             },
@@ -52,7 +52,7 @@
                 "name": "EnumCase1",
                 "kind": 10,
                 "location": {
-                    "uri": "./enum2.php"
+                    "uri": ".81/enum2.php"
                 },
                 "containerName": "MyNamespace\\Test2Enum"
             },
@@ -73,7 +73,7 @@
                 "name": "EnumCase2",
                 "kind": 10,
                 "location": {
-                    "uri": "./enum2.php"
+                    "uri": ".81/enum2.php"
                 },
                 "containerName": "MyNamespace\\Test2Enum"
             },

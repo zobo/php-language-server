@@ -12,7 +12,7 @@
                 "name": "MyNamespace",
                 "kind": 3,
                 "location": {
-                    "uri": "./enum1.php"
+                    "uri": ".81/enum3.php"
                 },
                 "containerName": ""
             },
@@ -21,28 +21,28 @@
             "documentation": null,
             "signatureInformation": null
         },
-        "MyNamespace\\TestEnum": {
-            "fqn": "MyNamespace\\TestEnum",
+        "MyNamespace\\Test3Enum": {
+            "fqn": "MyNamespace\\Test3Enum",
             "extends": [],
             "isMember": false,
             "roamed": false,
             "isStatic": false,
             "canBeInstantiated": false,
             "symbolInformation": {
-                "name": "TestEnum",
+                "name": "Test3Enum",
                 "kind": 10,
                 "location": {
-                    "uri": "./enum1.php"
+                    "uri": ".81/enum3.php"
                 },
                 "containerName": "MyNamespace"
             },
             "type": null,
-            "declarationLine": "enum TestEnum : string",
+            "declarationLine": "enum Test3Enum",
             "documentation": null,
             "signatureInformation": null
         },
-        "MyNamespace\\TestEnum::EnumCase1": {
-            "fqn": "MyNamespace\\TestEnum::EnumCase1",
+        "MyNamespace\\Test3Enum::EnumCase1": {
+            "fqn": "MyNamespace\\Test3Enum::EnumCase1",
             "extends": [],
             "isMember": true,
             "roamed": false,
@@ -52,18 +52,17 @@
                 "name": "EnumCase1",
                 "kind": 10,
                 "location": {
-                    "uri": "./enum1.php"
+                    "uri": ".81/enum3.php"
                 },
-                "containerName": "MyNamespace\\TestEnum"
+                "containerName": "MyNamespace\\Test3Enum"
             },
-            "type__tostring": "string",
-            "type": {},
-            "declarationLine": "case EnumCase1 = 'case1';",
+            "type": null,
+            "declarationLine": "case EnumCase1;",
             "documentation": null,
             "signatureInformation": null
         },
-        "MyNamespace\\TestEnum::EnumCase2": {
-            "fqn": "MyNamespace\\TestEnum::EnumCase2",
+        "MyNamespace\\Test3Enum::EnumCase2": {
+            "fqn": "MyNamespace\\Test3Enum::EnumCase2",
             "extends": [],
             "isMember": true,
             "roamed": false,
@@ -73,13 +72,12 @@
                 "name": "EnumCase2",
                 "kind": 10,
                 "location": {
-                    "uri": "./enum1.php"
+                    "uri": ".81/enum3.php"
                 },
-                "containerName": "MyNamespace\\TestEnum"
+                "containerName": "MyNamespace\\Test3Enum"
             },
-            "type__tostring": "string",
-            "type": {},
-            "declarationLine": "case EnumCase2 = 'case2';",
+            "type": null,
+            "declarationLine": "case EnumCase2;",
             "documentation": null,
             "signatureInformation": null
         }
