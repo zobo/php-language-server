@@ -23,7 +23,9 @@
         },
         "MyNamespace\\Test3Enum": {
             "fqn": "MyNamespace\\Test3Enum",
-            "extends": [],
+            "extends": [
+                "UnitEnum"
+            ],
             "isMember": false,
             "roamed": false,
             "isStatic": false,
@@ -56,7 +58,8 @@
                 },
                 "containerName": "MyNamespace\\Test3Enum"
             },
-            "type": null,
+            "type__tostring": "\\MyNamespace\\Test3Enum",
+            "type": {},
             "declarationLine": "case EnumCase1;",
             "documentation": null,
             "signatureInformation": null
@@ -76,7 +79,8 @@
                 },
                 "containerName": "MyNamespace\\Test3Enum"
             },
-            "type": null,
+            "type__tostring": "\\MyNamespace\\Test3Enum",
+            "type": {},
             "declarationLine": "case EnumCase2;",
             "documentation": null,
             "signatureInformation": null

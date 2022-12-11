@@ -583,7 +583,7 @@ class DefinitionResolver
         }
 
         return $classFqn . $memberSuffix;
-}
+    }
 
     /**
      * Returns FQN of the class a node is contained in
