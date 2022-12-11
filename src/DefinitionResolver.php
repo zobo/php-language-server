@@ -258,6 +258,17 @@ class DefinitionResolver
             $def->documentation = $this->getDocumentationFromNode($node);
         }
 
+        if ($node instanceof Node\Statement\EnumDeclaration) {
+            $enumType = $node->enumType ? $this->typeResolver->resolve($node->enumType->getText($node->getFileContents())) : null;
+            if ($enumType instanceof Types\String_) {
+                $def->extends[] = "StringBackedEnum";
+            } else if ($enumType instanceof Types\Integer) {
+                $def->extends[] = "IntBackedEnum";
+            } else {
+                $def->extends[] = "UnitEnum";
+            }
+        }
+
         if ($node instanceof FunctionLike) {
             $def->signatureInformation = $this->signatureInformationFactory->create($node);
         }
@@ -1252,11 +1263,9 @@ class DefinitionResolver
         // ENUM
         if (
             ($node instanceof Node\EnumCaseDeclaration) &&
-            ($enumDeclaration = $node->parent->parent) &&
-            ($enumDeclaration instanceof Node\Statement\EnumDeclaration) &&
-            ($enumDeclaration->enumType)
+            ($enumDeclaration = $node->getFirstAncestor(Node\Statement\EnumDeclaration::class))
            ) {
-            return $this->typeResolver->resolve($enumDeclaration->enumType->getText($node->getFileContents()));
+            return $this->typeResolver->resolve((string)$enumDeclaration->getNamespacedName());
         }
 
         // FOREACH KEY/VARIABLE
@@ -1465,8 +1474,7 @@ class DefinitionResolver
         // }
         if (
             ($node instanceof Node\EnumCaseDeclaration) &&
-            ($enumDeclaration = $node->parent->parent) &&
-            ($enumDeclaration instanceof Node\Statement\EnumDeclaration)
+            ($enumDeclaration = $node->getFirstAncestor(Node\Statement\EnumDeclaration::class))
            ) {
             return (string)$enumDeclaration->getNamespacedName() . '::' . $node->name->getText($node->getFileContents());
         }
