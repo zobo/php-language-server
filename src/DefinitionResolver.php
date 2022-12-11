@@ -545,15 +545,45 @@ class DefinitionResolver
             if (empty($memberName)) {
                 return null;
             }
-            $name = (string)$className . '::$' . $memberName;
+            $memberSuffix = '::$' . $memberName;
         } else {
-            $name = (string)$className . '::' . $scoped->memberName->getText($scoped->getFileContents());
+            $memberSuffix = '::' . $scoped->memberName->getText($scoped->getFileContents());
         }
         if ($scoped->parent instanceof Node\Expression\CallExpression) {
-            $name .= '()';
+            $memberSuffix .= '()';
         }
-        return $name;
-    }
+
+        $classFqn = (string)$className;
+        // Find the right class that implements the member
+        $implementorFqns = [$classFqn];
+        $visitedFqns = [];
+
+        while ($implementorFqn = array_shift($implementorFqns)) {
+            // If the member FQN exists, return it
+            if ($this->index->getDefinition($implementorFqn . $memberSuffix)) {
+                return $implementorFqn . $memberSuffix;
+            }
+            // Get Definition of implementor class
+            $implementorDef = $this->index->getDefinition($implementorFqn);
+            // If it doesn't exist, return the initial guess
+            if ($implementorDef === null) {
+                break;
+            }
+            // Note the FQN as visited
+            $visitedFqns[] = $implementorFqn;
+            // Repeat for parent class
+            if ($implementorDef->extends) {
+                foreach ($implementorDef->extends as $extends) {
+                    // Don't add the parent FQN if it's already been visited
+                    if (!\in_array($extends, $visitedFqns)) {
+                        $implementorFqns[] = $extends;
+                    }
+                }
+            }
+        }
+
+        return $classFqn . $memberSuffix;
+}
 
     /**
      * Returns FQN of the class a node is contained in
