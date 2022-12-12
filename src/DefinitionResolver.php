@@ -867,19 +867,28 @@ class DefinitionResolver
             if (!($classType instanceof Types\Object_) || $classType->getFqsen() === null) {
                 return new Types\Mixed_;
             }
-            $fqn = substr((string)$classType->getFqsen(), 1) . '::';
+            $classFqn = substr((string)$classType->getFqsen(), 1);
+            $add = '::';
 
             // TODO is there a cleaner way to do this?
-            $fqn .= $expr->memberName->getText() ?? $expr->memberName->getText($expr->getFileContents());
+            $add .= $expr->memberName->getText() ?? $expr->memberName->getText($expr->getFileContents());
             if ($expr->parent instanceof Node\Expression\CallExpression) {
-                $fqn .= '()';
+                $add .= '()';
             }
 
-            $def = $this->index->getDefinition($fqn);
-            if ($def === null) {
-                return new Types\Mixed_;
+            $classDef = $this->index->getDefinition($classFqn);
+            if ($classDef !== null) {
+                foreach ($classDef->getAncestorDefinitions($this->index, true) as $fqn => $def) {
+                    $def = $this->index->getDefinition($fqn . $add);
+                    if ($def !== null) {
+                        if ($def->type instanceof Types\This || $def->type instanceof Types\Self_ || $def->type instanceof Types\Static_) {
+                            return new Types\Object_(new Fqsen('\\' . $classFqn));
+                        }
+                        return $def->type;
+                    }
+                }
             }
-            return $def->type;
+            return new Types\Mixed_;
         }
 
         // OBJECT CREATION EXPRESSION
