@@ -315,12 +315,21 @@ class LanguageServer extends AdvancedJsonRpc\Dispatcher
      *
      * @return Promise <void>
      */
-    public function initialized(): void
+    public function initialized(): Promise
     {
         $this->client->window->logMessage(\LanguageServerProtocol\MessageType::INFO, "OK!");
-        if ($this->indexer) {
-            $this->indexer->index()->otherwise('\\LanguageServer\\crash');
-        }
+        return coroutine(function () {
+            // get config
+            $conf = yield $this->client->workspace->configuration([['section'=>'php.files.exclude']]);
+
+            if ($conf) {
+                $this->indexer->skipPatters = $conf[0] ? $conf[0] : [];
+            }
+
+            if ($this->indexer) {
+                $this->indexer->index()->otherwise('\\LanguageServer\\crash');
+            }
+        });
     }
 
     /**
