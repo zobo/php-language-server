@@ -121,6 +121,13 @@ class LanguageServer extends AdvancedJsonRpc\Dispatcher
     protected Indexer $indexer;
 
     /**
+     * Stored client capabilities
+     *
+     * @var ClientCapabilities
+     */
+    protected ClientCapabilities $clientCapabilities;
+
+    /**
      * @param ProtocolReader  $reader
      * @param ProtocolWriter $writer
      */
@@ -185,6 +192,7 @@ class LanguageServer extends AdvancedJsonRpc\Dispatcher
             $rootPath = uriToPath($rootUri);
         }
         $this->rootPath = $rootPath;
+        $this->clientCapabilities = $capabilities;
         return coroutine(function () use ($capabilities, $rootPath, $processId) {
 
             if ($capabilities->xfilesProvider) {
@@ -320,10 +328,9 @@ class LanguageServer extends AdvancedJsonRpc\Dispatcher
         $this->client->window->logMessage(\LanguageServerProtocol\MessageType::INFO, "OK!");
         return coroutine(function () {
             // get config
-            $conf = yield $this->client->workspace->configuration([['section'=>'php.files.exclude']]);
-
-            if ($conf) {
-                $this->indexer->skipPatters = $conf[0] ? $conf[0] : [];
+            if ($this->clientCapabilities->workspace && $this->clientCapabilities->workspace->configuration) {
+                $conf = yield $this->client->workspace->configuration([['section'=>'php.files.exclude']]);
+                $this->indexer->skipPatters = $conf && $conf[0] ? $conf[0] : [];
             }
 
             if ($this->indexer) {
