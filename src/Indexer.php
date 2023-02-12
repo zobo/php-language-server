@@ -130,7 +130,7 @@ class Indexer
             $count_all = count($uris);
 
             $skip = array_map(function ($v) {
-                return str_replace('%2A','*',pathToUri(Path::makeAbsolute($v, $this->rootPath)));
+                return str_replace('%2A', '*', pathToUri(Path::makeAbsolute($v, $this->rootPath)));
             }, $this->skipPatters);
 
             $uris = array_filter($uris, function ($v) use ($skip) {
