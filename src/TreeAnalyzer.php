@@ -167,7 +167,7 @@ class TreeAnalyzer
                         $node->parent instanceof Node\Expression\CallExpression ||
                         $node->memberName instanceof PhpParser\Token
                     ))
-                || ($parent instanceof Node\Statement\NamespaceDefinition && $parent->name !== null && $parent->name->getStartPosition() === $node->getStartPosition())
+                || ($parent instanceof Node\Statement\NamespaceDefinition && $parent->name instanceof Node\QualifiedName && $parent->name->getStartPosition() === $node->getStartPosition())
             ) {
                 return;
             }

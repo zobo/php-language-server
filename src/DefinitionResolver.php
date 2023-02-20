@@ -158,7 +158,7 @@ class DefinitionResolver
                 $namespaceImportTable[$alias] = (string)$name;
             }
             $namespaceDefinition = $node->getNamespaceDefinition();
-            if ($namespaceDefinition !== null && $namespaceDefinition->name !== null) {
+            if ($namespaceDefinition !== null && $namespaceDefinition->name instanceof Node\QualifiedName) {
                 $namespaceName = (string)$namespaceDefinition->name->getNamespacedName();
             } else {
                 $namespaceName = 'global';
@@ -199,7 +199,7 @@ class DefinitionResolver
         $def->isMember = !(
             $node instanceof PhpParser\ClassLike ||
 
-            ($node instanceof Node\Statement\NamespaceDefinition && $node->name !== null) ||
+            ($node instanceof Node\Statement\NamespaceDefinition && $node->name instanceof Node\QualifiedName) ||
 
             $node instanceof Node\Statement\FunctionDeclaration ||
 
@@ -399,7 +399,7 @@ class DefinitionResolver
             $contents = $node->getFileContents();
             if ($useClause instanceof Node\NamespaceUseGroupClause) {
                 $prefix = $useClause->parent->parent->namespaceName;
-                if ($prefix === null) {
+                if (!($prefix instanceof Node\QualifiedName)) {
                     return null;
                 }
                 $name = PhpParser\ResolvedName::buildName($prefix->nameParts, $contents);
