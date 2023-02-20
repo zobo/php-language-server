@@ -226,7 +226,7 @@ class DefinitionResolver
 
         if ($node instanceof Node\Statement\ClassDeclaration &&
             // TODO - this should be better represented in the parser API
-            $node->classBaseClause !== null && $node->classBaseClause->baseClass !== null) {
+            $node->classBaseClause !== null && $node->classBaseClause->baseClass instanceof Node\QualifiedName) {
             $def->extends = [(string)$node->classBaseClause->baseClass->getResolvedName()];
         } elseif (
             $node instanceof Node\Statement\InterfaceDeclaration &&
@@ -323,7 +323,7 @@ class DefinitionResolver
         } else if ($fqn === 'parent') {
             // Resolve parent keyword to the base class FQN
             $classNode = $node->getFirstAncestor(Node\Statement\ClassDeclaration::class);
-            if (!$classNode || !$classNode->classBaseClause || !$classNode->classBaseClause->baseClass) {
+            if (!$classNode || !$classNode->classBaseClause || !($classNode->classBaseClause->baseClass instanceof Node\QualifiedName)) {
                 return;
             }
             $fqn = (string)$classNode->classBaseClause->baseClass->getResolvedName();
@@ -527,7 +527,7 @@ class DefinitionResolver
             }
             if ($className === 'parent') {
                 // parent is resolved to the parent class
-                if (!isset($classNode->classBaseClause) || !isset($classNode->classBaseClause->baseClass)) {
+                if (!isset($classNode->classBaseClause) || !($classNode->classBaseClause->baseClass instanceof Node\QualifiedName)) {
                     return null;
                 }
                 $className = (string)$classNode->classBaseClause->baseClass->getResolvedName();
@@ -1118,7 +1118,7 @@ class DefinitionResolver
         if ($className === 'self' || $className === 'parent') {
             $classNode = $class->getFirstAncestor(Node\Statement\ClassDeclaration::class);
             if ($className === 'parent') {
-                if ($classNode === null || $classNode->classBaseClause === null) {
+                if ($classNode === null || $classNode->classBaseClause === null || !($classNode->classBaseClause->baseClass instanceof Node\QualifiedName)) {
                     return new Types\Object_;
                 }
                 // parent is resolved to the parent class
@@ -1246,7 +1246,7 @@ class DefinitionResolver
                     }
                 } elseif ($returnType instanceof Types\Parent_) {
                     $classNode = $node->getFirstAncestor(Node\Statement\ClassDeclaration::class);
-                    if ($classNode->classBaseClause !== null && $classNode->classBaseClause->baseClass !== null) {
+                    if ($classNode->classBaseClause !== null && $classNode->classBaseClause->baseClass instanceof Node\QualifiedName) {
                         return new Types\Object_(new Fqsen('\\' . (string)$classNode->classBaseClause->baseClass->getResolvedName()));
                     }
                 }
@@ -1277,7 +1277,7 @@ class DefinitionResolver
                         }
                     } elseif ($returnType->getResolvedName() === 'parent') {
                         $classNode = $node->getFirstAncestor(Node\Statement\ClassDeclaration::class);
-                        if ($classNode->classBaseClause !== null && $classNode->classBaseClause->baseClass !== null) {
+                        if ($classNode->classBaseClause !== null && $classNode->classBaseClause->baseClass instanceof Node\QualifiedName) {
                             $types[] = new Types\Object_(new Fqsen('\\' . (string)$classNode->classBaseClause->baseClass->getResolvedName()));
                             return $types;
                         }

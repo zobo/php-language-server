@@ -191,7 +191,7 @@ class TreeAnalyzer
             } else if ($fqn === 'parent') {
                 // Resolve parent keyword to the base class FQN
                 $classNode = $node->getFirstAncestor(Node\Statement\ClassDeclaration::class);
-                if (!$classNode || !$classNode->classBaseClause || !$classNode->classBaseClause->baseClass) {
+                if (!$classNode || !$classNode->classBaseClause || !($classNode->classBaseClause->baseClass instanceof Node\QualifiedName)) {
                     return;
                 }
                 $fqn = (string)$classNode->classBaseClause->baseClass->getResolvedName();
