@@ -339,7 +339,7 @@ class CompletionProvider
 
             if ($isFullyQualified) {
                 // \Prefix\Goes\Here| - Only return completions from the root namespace.
-                /** @var $items \Generator|CompletionItem[] Generator yielding CompletionItems indexed by their FQN */
+                /** @var \Generator|CompletionItem[] $items Generator yielding CompletionItems indexed by their FQN */
                 $items = $this->getCompletionsForFqnPrefix($prefix, $isCreation, false);
             } else if ($isQualified) {
                 // Prefix\Goes\Here|

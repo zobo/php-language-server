@@ -205,7 +205,7 @@ class TreeAnalyzer
             if (
                 $node instanceof Node\QualifiedName
                 && ($node->isQualifiedName() || $node->parent instanceof Node\NamespaceUseClause)
-                && !($parent instanceof Node\Statement\NamespaceDefinition && $parent->name->getStartPosition() === $node->getStartPositions()
+                && !($parent instanceof Node\Statement\NamespaceDefinition && $parent->name->getStartPosition() === $node->getStartPosition()
                 )
             ) {
                 // Add references for each referenced namespace
