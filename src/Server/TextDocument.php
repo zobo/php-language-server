@@ -14,12 +14,14 @@ use LanguageServerProtocol\{
     Hover,
     Location,
     MarkedString,
+    MarkupContent,
     Position,
     Range,
     ReferenceContext,
     SymbolDescriptor,
     PackageDescriptor,
     SymbolLocationInformation,
+    SymbolKind,
     TextDocumentIdentifier,
     TextDocumentItem,
     VersionedTextDocumentIdentifier,
@@ -347,6 +349,15 @@ class TextDocument
             }
             if ($def->documentation) {
                 $contents[] = $def->documentation;
+            }
+            if ($def->signatureInformation && $def->signatureInformation->parameters) {
+                $contents[] = new MarkedString('markdown', implode("\n", array_map(function (\LanguageServerProtocol\ParameterInformation $p) {
+                    return "@param {$p->label}" . ($p->documentation ? " {$p->documentation}" : '');
+                }, $def->signatureInformation->parameters)));
+            }
+            $type_kind = $def->symbolInformation !== null && in_array($def->symbolInformation->kind, [SymbolKind::METHOD, SymbolKind::FUNCTION]) ? "@return" : "@type";
+            if ($def->type) {
+                $contents[] = new MarkedString('markdown', $type_kind . " " . (string)$def->type);
             }
             return new Hover($contents, $range);
         });

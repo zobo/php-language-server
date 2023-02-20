@@ -47,7 +47,7 @@
                 "containerName": "MyNamespace"
             },
             "type": null,
-            "declarationLine": "class ParseErrorsTest",
+            "declarationLine": "namespace MyNamespace;\n\nclass ParseErrorsTest",
             "documentation": null,
             "signatureInformation": null
         },
@@ -68,7 +68,7 @@
             },
             "type__tostring": "mixed",
             "type": {},
-            "declarationLine": "public function setAccount(AccountInterface $account)",
+            "declarationLine": "public function MyNamespace\\ParseErrorsTest::setAccount(AccountInterface $account)",
             "documentation": null,
             "signatureInformation": {
                 "label": "(\\MyNamespace\\AccountInterface $account)",

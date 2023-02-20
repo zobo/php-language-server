@@ -44,7 +44,7 @@
                 "containerName": "TestNamespace"
             },
             "type": null,
-            "declarationLine": "class TestClass",
+            "declarationLine": "namespace TestNamespace;\n\nclass TestClass",
             "documentation": null,
             "signatureInformation": null
         },
@@ -65,7 +65,7 @@
             },
             "type__tostring": "mixed",
             "type": {},
-            "declarationLine": "public $testProperty;",
+            "declarationLine": "property mixed $testProperty",
             "documentation": null,
             "signatureInformation": null
         },
@@ -86,7 +86,7 @@
             },
             "type__tostring": "mixed",
             "type": {},
-            "declarationLine": "public function testMethod($testParameter)",
+            "declarationLine": "public function TestNamespace\\TestClass::testMethod($testParameter)",
             "documentation": null,
             "signatureInformation": {
                 "label": "(mixed $testParameter)",

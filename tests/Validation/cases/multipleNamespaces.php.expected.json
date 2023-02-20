@@ -50,7 +50,7 @@
                 "containerName": "MyNamespace1"
             },
             "type": null,
-            "declarationLine": "class B {",
+            "declarationLine": "namespace MyNamespace1;\n\nclass B {",
             "documentation": null,
             "signatureInformation": null
         },
@@ -71,7 +71,7 @@
             },
             "type__tostring": "mixed",
             "type": {},
-            "declarationLine": "function b()",
+            "declarationLine": "function MyNamespace1\\B::b()",
             "documentation": null,
             "signatureInformation": {
                 "label": "()",
@@ -116,7 +116,7 @@
                 "containerName": "MyNamespace2"
             },
             "type": null,
-            "declarationLine": "class A extends MyNamespace1\\B {",
+            "declarationLine": "namespace MyNamespace2;\n\nclass A extends MyNamespace1\\B {",
             "documentation": null,
             "signatureInformation": null
         },
@@ -137,7 +137,7 @@
             },
             "type__tostring": "mixed",
             "type": {},
-            "declarationLine": "function a ()",
+            "declarationLine": "function MyNamespace2\\A::a ()",
             "documentation": null,
             "signatureInformation": {
                 "label": "()",

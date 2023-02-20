@@ -42,7 +42,7 @@
             },
             "type__tostring": "\\FooClass",
             "type": {},
-            "declarationLine": "public static function staticFoo(): FooClass",
+            "declarationLine": "public static function FooClass::staticFoo(): FooClass",
             "documentation": null,
             "signatureInformation": {
                 "label": "()",
@@ -66,7 +66,7 @@
             },
             "type__tostring": "\\FooClass",
             "type": {},
-            "declarationLine": "public static function staticSelf(): self",
+            "declarationLine": "public static function FooClass::staticSelf(): self",
             "documentation": null,
             "signatureInformation": {
                 "label": "()",
@@ -90,7 +90,7 @@
             },
             "type__tostring": "mixed",
             "type": {},
-            "declarationLine": "public function bar()",
+            "declarationLine": "public function FooClass::bar()",
             "documentation": null,
             "signatureInformation": {
                 "label": "()",

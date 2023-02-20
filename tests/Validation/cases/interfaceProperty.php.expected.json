@@ -17,7 +17,7 @@
                 "containerName": ""
             },
             "type": null,
-            "declarationLine": "interface A  {",
+            "declarationLine": "interface A",
             "documentation": null,
             "signatureInformation": null
         }

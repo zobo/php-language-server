@@ -44,7 +44,7 @@
                 "containerName": "MyNamespace"
             },
             "type": null,
-            "declarationLine": "class A",
+            "declarationLine": "namespace MyNamespace;\n\nclass A",
             "documentation": null,
             "signatureInformation": null
         },
@@ -65,7 +65,7 @@
             },
             "type__tostring": "mixed",
             "type": {},
-            "declarationLine": "public static function suite()",
+            "declarationLine": "public static function MyNamespace\\A::suite()",
             "documentation": null,
             "signatureInformation": {
                 "label": "()",

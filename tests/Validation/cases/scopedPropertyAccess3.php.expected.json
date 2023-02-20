@@ -45,7 +45,7 @@
             },
             "type__tostring": "string",
             "type": {},
-            "declarationLine": "static $a;",
+            "declarationLine": "property string $a",
             "documentation": null,
             "signatureInformation": null
         }

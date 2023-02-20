@@ -60,6 +60,7 @@ class SymbolInformationFactory
             )
             || $node instanceof Node\UseVariableName
             || $node instanceof Node\Parameter
+            || $node->parent->parent->parent instanceof Node\Expression\ListIntrinsicExpression
         ) {
             $symbol->kind = SymbolKind::VARIABLE;
         } else {

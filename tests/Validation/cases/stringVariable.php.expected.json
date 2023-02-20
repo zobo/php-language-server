@@ -42,7 +42,7 @@
             },
             "type__tostring": "int",
             "type": {},
-            "declarationLine": "public $hi;",
+            "declarationLine": "property int $hi",
             "documentation": null,
             "signatureInformation": null
         },
@@ -63,7 +63,7 @@
             },
             "type__tostring": "mixed",
             "type": {},
-            "declarationLine": "function a ()",
+            "declarationLine": "function B::a ()",
             "documentation": null,
             "signatureInformation": {
                 "label": "()",

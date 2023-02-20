@@ -41,7 +41,7 @@
                 "containerName": "MyNamespace"
             },
             "type": null,
-            "declarationLine": "class ParseErrorsTest {",
+            "declarationLine": "namespace MyNamespace;\n\nclass ParseErrorsTest {",
             "documentation": null,
             "signatureInformation": null
         },
@@ -62,7 +62,7 @@
             },
             "type__tostring": "mixed",
             "type": {},
-            "declarationLine": "public function setUp()",
+            "declarationLine": "public function MyNamespace\\ParseErrorsTest::setUp()",
             "documentation": null,
             "signatureInformation": {
                 "label": "()",

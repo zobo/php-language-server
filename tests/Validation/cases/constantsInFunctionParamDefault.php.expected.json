@@ -21,7 +21,7 @@
                 "containerName": ""
             },
             "type": null,
-            "declarationLine": "interface A {",
+            "declarationLine": "interface A",
             "documentation": null,
             "signatureInformation": null
         },
@@ -42,7 +42,7 @@
             },
             "type__tostring": "mixed",
             "type": {},
-            "declarationLine": "function b ($a = MY_CONSTANT);",
+            "declarationLine": "function A::b ($a = MY_CONSTANT);",
             "documentation": null,
             "signatureInformation": {
                 "label": "(\\MY_CONSTANT $a = MY_CONSTANT)",

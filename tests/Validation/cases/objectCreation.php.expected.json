@@ -41,7 +41,7 @@
                 "containerName": "MyNamespace"
             },
             "type": null,
-            "declarationLine": "class A {",
+            "declarationLine": "namespace MyNamespace;\n\nclass A {",
             "documentation": null,
             "signatureInformation": null
         },
@@ -62,7 +62,7 @@
             },
             "type__tostring": "mixed",
             "type": {},
-            "declarationLine": "function a ()",
+            "declarationLine": "function MyNamespace\\A::a ()",
             "documentation": null,
             "signatureInformation": {
                 "label": "()",

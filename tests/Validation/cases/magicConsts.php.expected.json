@@ -42,7 +42,7 @@
             },
             "type__tostring": "array<\\__CLASS__,bool>",
             "type": {},
-            "declarationLine": "private static $deprecationsTriggered;",
+            "declarationLine": "property array<\\__CLASS__,bool> $deprecationsTriggered",
             "documentation": null,
             "signatureInformation": null
         }
