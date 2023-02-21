@@ -23,7 +23,11 @@ use LanguageServerProtocol\{
     TextDocumentIdentifier,
     TextDocumentItem,
     VersionedTextDocumentIdentifier,
-    CompletionContext
+    CompletionContext,
+    CompletionItem,
+    CompletionList,
+    SignatureHelp,
+    SymbolInformation
 };
 use Microsoft\PhpParser\Node;
 use Sabre\Event\Promise;
@@ -44,11 +48,6 @@ class TextDocument
      * @var \LanguageServer\LanguageClient
      */
     protected $client;
-
-    /**
-     * @var Project
-     */
-    protected $project;
 
     /**
      * @var DefinitionResolver

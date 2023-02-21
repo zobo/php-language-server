@@ -54,12 +54,12 @@ class Indexer
     private $documentLoader;
 
     /**
-     * @var \stdClasss
+     * @var \stdClass
      */
     private $composerLock;
 
     /**
-     * @var \stdClasss
+     * @var \stdClass
      */
     private $composerJson;
 

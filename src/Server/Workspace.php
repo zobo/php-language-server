@@ -126,6 +126,7 @@ class Workspace
     {
         // TODO: $files is unused in the coroutine
         return coroutine(function () use ($query, $files) {
+            unset($files);
             if ($this->composerLock === null) {
                 return [];
             }

@@ -312,6 +312,7 @@ class DefinitionResolver
         if ($fqn === 'self' || $fqn === 'static') {
             // Resolve self and static keywords to the containing class
             // (This is not 100% correct for static but better than nothing)
+            /** @var Node\Statement\ClassDeclaration|null $classNode */
             $classNode = $node->getFirstAncestor(Node\Statement\ClassDeclaration::class);
             if (!$classNode) {
                 return;
@@ -322,6 +323,7 @@ class DefinitionResolver
             }
         } else if ($fqn === 'parent') {
             // Resolve parent keyword to the base class FQN
+            /** @var Node\Statement\ClassDeclaration|null $classNode */
             $classNode = $node->getFirstAncestor(Node\Statement\ClassDeclaration::class);
             if (!$classNode || !$classNode->classBaseClause || !($classNode->classBaseClause->baseClass instanceof Node\QualifiedName)) {
                 return;
@@ -521,6 +523,7 @@ class DefinitionResolver
 
         if ($className === 'self' || $className === 'static' || $className === 'parent') {
             // self and static are resolved to the containing class
+            /** @var Node\Statement\ClassDeclaration|null $classNode */
             $classNode = $scoped->getFirstAncestor(Node\Statement\ClassDeclaration::class);
             if ($classNode === null) {
                 return null;
@@ -594,6 +597,7 @@ class DefinitionResolver
      */
     private static function getContainingClassFqn(Node $node)
     {
+        /** @var Node\Statement\ClassDeclaration|null $classNode */
         $classNode = $node->getFirstAncestor(Node\Statement\ClassDeclaration::class);
         if ($classNode === null) {
             return null;
@@ -618,8 +622,8 @@ class DefinitionResolver
     /**
      * Returns the assignment or parameter node where a variable was defined
      *
-     * @param Node\Expression\Variable|Node\Expression\ClosureUse $var The variable access
-     * @return Node\Expression\Assign|Node\Expression\AssignOp|Node\Param|Node\Expression\ClosureUse|null
+     * @param Node\Expression\Variable|Node\UseVariableName $var The variable access
+     * @return Node\Expression\AssignmentExpression|Node\Parameter|Node\UseVariableName|null
      */
     public function resolveVariableToNode($var)
     {
@@ -1116,6 +1120,7 @@ class DefinitionResolver
         $className = (string)$class->getResolvedName();
 
         if ($className === 'self' || $className === 'parent') {
+            /** @var Node\Statement\ClassDeclaration|null $classNode */
             $classNode = $class->getFirstAncestor(Node\Statement\ClassDeclaration::class);
             if ($className === 'parent') {
                 if ($classNode === null || $classNode->classBaseClause === null || !($classNode->classBaseClause->baseClass instanceof Node\QualifiedName)) {
@@ -1219,6 +1224,7 @@ class DefinitionResolver
                         return $selfType;
                     }
                 } elseif ($returnType instanceof Types\Parent_) {
+                    /** @var Node\Statement\ClassDeclaration|null $classNode */
                     $classNode = $node->getFirstAncestor(Node\Statement\ClassDeclaration::class);
                     if ($classNode->classBaseClause !== null && $classNode->classBaseClause->baseClass instanceof Node\QualifiedName) {
                         return new Types\Object_(new Fqsen('\\' . (string)$classNode->classBaseClause->baseClass->getResolvedName()));
@@ -1246,6 +1252,7 @@ class DefinitionResolver
 
         // FOREACH KEY/VARIABLE
         if ($node instanceof Node\ForeachKey || $node->parent instanceof Node\ForeachKey) {
+            /** @var Node\Statement\ForeachStatement $foreach */
             $foreach = $node->getFirstAncestor(Node\Statement\ForeachStatement::class);
             $collectionType = $this->resolveExpressionNodeToType($foreach->forEachCollectionName);
             if ($collectionType instanceof Types\Array_) {
@@ -1258,6 +1265,7 @@ class DefinitionResolver
         if ($node instanceof Node\ForeachValue
             || ($node instanceof Node\Expression\Variable && $node->parent instanceof Node\ForeachValue)
         ) {
+            /** @var Node\Statement\ForeachStatement $foreach */
             $foreach = $node->getFirstAncestor(Node\Statement\ForeachStatement::class);
             $collectionType = $this->resolveExpressionNodeToType($foreach->forEachCollectionName);
             if ($collectionType instanceof Types\Array_) {
@@ -1510,6 +1518,7 @@ class DefinitionResolver
             ($node instanceof Node\EnumCaseDeclaration) &&
             ($enumDeclaration = $node->getFirstAncestor(Node\Statement\EnumDeclaration::class))
            ) {
+            /** @var Node\Statement\EnumDeclaration $enumDeclaration */
             return (string)$enumDeclaration->getNamespacedName() . '::' . $node->name->getText($node->getFileContents());
         }
 
