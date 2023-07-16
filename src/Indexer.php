@@ -269,7 +269,7 @@ class Indexer
                         MessageType::INFO,
                         "Ignoring file {$uri} because it exceeds size limit of {$e->limit} bytes ({$e->size})"
                     );
-                } catch (\Exception $e) {
+                } catch (\Throwable $e) {
                     $this->client->window->logMessage(MessageType::ERROR, "Error parsing $uri: " . (string)$e);
                 }
             }
