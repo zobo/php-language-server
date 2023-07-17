@@ -242,7 +242,7 @@ class DefinitionResolver
         if ($node instanceof Node\Statement\ClassDeclaration &&
             $node->classMembers !== null && $node->classMembers->classMemberDeclarations !== null) {
             foreach ($node->classMembers->classMemberDeclarations as $dec) {
-                if ($dec instanceof Node\TraitUseClause) {
+                if ($dec instanceof Node\TraitUseClause && $dec->traitNameList !== null) {
                     foreach ($dec->traitNameList->getValues() as $n) {
                         $content = $n->getFileContents();
                         if ($n->isFullyQualifiedName()) {
