@@ -452,9 +452,8 @@ class TextDocument
             ) {
                 $range = RangeFactory::fromNode($node);
                 return [ 'expression' => $node->getText(), 'range' => $range ];
-            } 
+            }
             return null;
         });
     }
-
 }
