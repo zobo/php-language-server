@@ -307,6 +307,9 @@ class LanguageServer extends AdvancedJsonRpc\Dispatcher
             $serverCapabilities->xworkspaceReferencesProvider = true;
             $serverCapabilities->xdefinitionProvider = true;
             $serverCapabilities->xdependenciesProvider = true;
+            $serverCapabilities->experimental = [
+                'xevaluatableExpressionProvider' => true,
+            ];
 
             return new InitializeResult($serverCapabilities);
         });
