@@ -47,6 +47,9 @@ class LanguageServerTest extends TestCase
         $serverCapabilities->xworkspaceReferencesProvider = true;
         $serverCapabilities->xdefinitionProvider = true;
         $serverCapabilities->xdependenciesProvider = true;
+        $serverCapabilities->experimental = [
+            'xevaluatableExpressionProvider' => true,
+        ];
 
         $this->assertEquals(new InitializeResult($serverCapabilities), $result);
     }
