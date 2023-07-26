@@ -426,4 +426,35 @@ class TextDocument
             return [new SymbolLocationInformation($descriptor, $def->symbolInformation->location)];
         });
     }
+
+    /**
+     * Return an evaluatable exrpession under the cursor for the debugger.
+     *
+     * @param TextDocumentIdentifier $textDocument The text document
+     * @param Position $position The position inside the text document
+     * @return Promise <EE>
+     */
+    public function xevaluatableExpression(TextDocumentIdentifier $textDocument, Position $position): Promise
+    {
+        return coroutine(function () use ($textDocument, $position) {
+            $document = yield $this->documentLoader->getOrLoad($textDocument->uri);
+            // Find the node under the cursor
+            $node = $document->getNodeAtPosition($position);
+            if ($node === null) {
+                return null;
+            }
+            if (
+                $node instanceof Node\Expression\Variable ||
+                $node instanceof Node\Parameter ||
+                $node instanceof Node\Expression\SubscriptExpression ||
+                $node instanceof Node\Expression\MemberAccessExpression ||
+                (($node2 = $node->getFirstAncestor(Node\Expression\SubscriptExpression::class)) && ($node = $node2))
+            ) {
+                $range = RangeFactory::fromNode($node);
+                return [ 'expression' => $node->getText(), 'range' => $range ];
+            } 
+            return null;
+        });
+    }
+
 }
