@@ -5,9 +5,6 @@
         ],
         "ThirdNamespace": [
             "./trait4.php"
-        ],
-        "MyNamespace\\TestTrait": [
-            "./trait4.php"
         ]
     },
     "definitions": {

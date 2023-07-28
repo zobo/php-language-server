@@ -244,20 +244,7 @@ class DefinitionResolver
             foreach ($node->classMembers->classMemberDeclarations as $dec) {
                 if ($dec instanceof Node\TraitUseClause && $dec->traitNameList !== null) {
                     foreach ($dec->traitNameList->getValues() as $n) {
-                        $content = $n->getFileContents();
-                        if ($n->isFullyQualifiedName()) {
-                            $def->extends[] = (string)PhpParser\ResolvedName::buildName($n->nameParts, $content);
-                        } else {
-                            list($importTable,,) = $n->getImportTablesForCurrentScope();
-                            $index = $n->nameParts[0]->getText($content);
-                            if (isset($importTable[$index])) {
-                                $resolvedName = $importTable[$index];
-                                $resolvedName->addNameParts(\array_slice($n->nameParts, 1), $content);
-                                $def->extends[] = (string)$resolvedName;
-                            } else {
-                                $def->extends[] = (string)$n->getNamespacedName();
-                            }
-                        }
+                        $def->extends[] = (string)$n->getResolvedName();
                     }
                 }
             }
