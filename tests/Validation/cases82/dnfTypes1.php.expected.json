@@ -32,15 +32,15 @@
                 },
                 "containerName": ""
             },
-            "type__tostring": "\\A|\\B|\\C|\\D|\\E",
+            "type__tostring": "\\A&\\B|\\C|\\D&\\E",
             "type": {},
             "declarationLine": "function foo ((A&B)|C $x): (A&B)|C|(D&E)",
             "documentation": null,
             "signatureInformation": {
-                "label": "(\\A|\\B|\\C $x)",
+                "label": "(\\A&\\B|\\C $x)",
                 "parameters": [
                     {
-                        "label": "\\A|\\B|\\C $x"
+                        "label": "\\A&\\B|\\C $x"
                     }
                 ]
             }

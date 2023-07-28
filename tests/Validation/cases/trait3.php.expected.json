@@ -1,6 +1,6 @@
 {
     "references": {
-        "MyNamespace\\OtherNamespace\\TestTrait": [
+        "OtherNamespace\\TestTrait": [
             "./trait3.php"
         ]
     },
