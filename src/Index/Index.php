@@ -447,7 +447,7 @@ class Index implements ReadableIndex, \Serializable
             if (isset($storage[$part])) {
                 unset($storage[$part]);
 
-                if (0 === count($storage)) {
+                if (0 === count($storage) && $level > 0) {
                     // parse again the definition tree to remove the parent
                     // when it has no more children
                     $this->removeIndexedDefinition(0, array_slice($parts, 0, $level), $rootStorage, $rootStorage);
