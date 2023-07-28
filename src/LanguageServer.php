@@ -310,6 +310,9 @@ class LanguageServer extends AdvancedJsonRpc\Dispatcher
             $serverCapabilities->experimental = [
                 'xevaluatableExpressionProvider' => true,
             ];
+            if ($capabilities->textDocument->inlineValue) {
+                $serverCapabilities->inlineValueProvider = true;
+            }
 
             return new InitializeResult($serverCapabilities);
         });
