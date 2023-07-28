@@ -434,7 +434,7 @@ class TextDocument
      *
      * @param TextDocumentIdentifier $textDocument The text document
      * @param Position $position The position inside the text document
-     * @return Promise <EE>
+     * @return Promise <array>
      */
     public function xevaluatableExpression(TextDocumentIdentifier $textDocument, Position $position): Promise
     {
@@ -469,7 +469,7 @@ class TextDocument
             return [ 'expression' => $node->getText(), 'range' => $range ];
         }
         return null;
-}
+    }
 
     /**
      * Return inline values for document range.
@@ -477,11 +477,11 @@ class TextDocument
      * @param TextDocumentIdentifier $textDocument The text document
      * @param Range $range The document range for which inline values should be computed
      * @param InlineValueContext $context Additional information about the context in which inline values were requested.
-     * @return Promise <InlineValue[]|null>
+     * @return Promise <InlineValueVariableLookup[]|null>
      */
     public function inlineValue(TextDocumentIdentifier $textDocument, Range $range, InlineValueContext $context): Promise
     {
-        return coroutine(function () use ($textDocument, $range, $context) {
+        return coroutine(function () use ($textDocument, $range) {
             $document = yield $this->documentLoader->getOrLoad($textDocument->uri);
             $root = $document->getSourceFileNode();
 
@@ -489,10 +489,9 @@ class TextDocument
             $end = $range->end->toOffset($root->getFileContents());
 
             $i = $root->getDescendantNodes(fn ($child) => $child->getStartPosition() >= $start && $child->getEndPosition() <= $end);
-            $i = new \CallbackFilterIterator($i, fn($node) => 
+            $i = new \CallbackFilterIterator($i, fn($node) =>
                 ($node instanceof Node\Expression\Variable ||
-                $node instanceof Node\Parameter)
-            );
+                $node instanceof Node\Parameter));
             $ret = array_map(
                 function ($node) {
                     $ev = $this->nodeToEvaluatable($node);
@@ -501,7 +500,8 @@ class TextDocument
                     }
                     return new InlineValueVariableLookup($ev['range'], $ev['expression'], true);
                 },
-                \iterator_to_array($i, false));
+                \iterator_to_array($i, false)
+            );
             $ret = array_filter($ret);
             return $ret;
         });
