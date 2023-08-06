@@ -488,7 +488,7 @@ class TextDocument
             $start = $range->start->toOffset($root->getFileContents());
             $end = $range->end->toOffset($root->getFileContents());
 
-            $i = $root->getDescendantNodes(fn ($child) => $child->getStartPosition() >= $start && $child->getEndPosition() <= $end);
+            $i = $root->getDescendantNodes(fn ($child) => $child->getStartPosition() <= $end && $child->getEndPosition() >= $start);
             $i = new \CallbackFilterIterator($i, fn($node) =>
                 ($node instanceof Node\Expression\Variable ||
                 $node instanceof Node\Parameter));
