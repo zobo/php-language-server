@@ -44,7 +44,7 @@
                 "containerName": "TestNamespace"
             },
             "type": null,
-            "declarationLine": "class A {",
+            "declarationLine": "namespace TestNamespace;\n\nclass A {",
             "documentation": null,
             "signatureInformation": null
         },
@@ -65,7 +65,7 @@
             },
             "type__tostring": "int",
             "type": {},
-            "declarationLine": "public $a;",
+            "declarationLine": "property int $a",
             "documentation": null,
             "signatureInformation": null
         }

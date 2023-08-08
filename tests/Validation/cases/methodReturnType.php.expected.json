@@ -47,7 +47,7 @@
             },
             "type__tostring": "\\FooClass",
             "type": {},
-            "declarationLine": "public function foo(): FooClass",
+            "declarationLine": "public function FooClass::foo(): FooClass",
             "documentation": null,
             "signatureInformation": {
                 "label": "()",
@@ -71,7 +71,7 @@
             },
             "type__tostring": "\\FooClass",
             "type": {},
-            "declarationLine": "public function bar()",
+            "declarationLine": "public function FooClass::bar()",
             "documentation": "",
             "signatureInformation": {
                 "label": "()",
@@ -96,7 +96,7 @@
             },
             "type__tostring": "static",
             "type": {},
-            "declarationLine": "public function baz()",
+            "declarationLine": "public function FooClass::baz()",
             "documentation": "",
             "signatureInformation": {
                 "label": "()",
@@ -121,7 +121,7 @@
             },
             "type__tostring": "\\EmptyClass",
             "type": {},
-            "declarationLine": "public function buz()",
+            "declarationLine": "public function FooClass::buz()",
             "documentation": "",
             "signatureInformation": {
                 "label": "()",

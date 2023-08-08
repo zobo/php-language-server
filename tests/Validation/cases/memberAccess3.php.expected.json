@@ -59,7 +59,7 @@
                 "containerName": "MyNamespace"
             },
             "type": null,
-            "declarationLine": "class A {",
+            "declarationLine": "namespace MyNamespace;\n\nclass A {",
             "documentation": null,
             "signatureInformation": null
         },
@@ -80,7 +80,7 @@
             },
             "type__tostring": "mixed",
             "type": {},
-            "declarationLine": "public static function getInitializer(ClassLoader $loader)",
+            "declarationLine": "public static function MyNamespace\\A::getInitializer(ClassLoader $loader)",
             "documentation": null,
             "signatureInformation": {
                 "label": "(\\MyNamespace\\ClassLoader $loader)",

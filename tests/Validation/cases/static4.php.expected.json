@@ -46,7 +46,7 @@
                 "containerName": "MyNamespace"
             },
             "type": null,
-            "declarationLine": "class A extends B {",
+            "declarationLine": "namespace MyNamespace;\n\nclass A extends B {",
             "documentation": null,
             "signatureInformation": null
         },
@@ -67,7 +67,7 @@
             },
             "type__tostring": "mixed",
             "type": {},
-            "declarationLine": "function a ()",
+            "declarationLine": "function MyNamespace\\A::a ()",
             "documentation": null,
             "signatureInformation": {
                 "label": "()",

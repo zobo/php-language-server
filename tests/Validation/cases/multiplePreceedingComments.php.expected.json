@@ -38,7 +38,7 @@
             },
             "type__tostring": "\\Iterator",
             "type": {},
-            "declarationLine": "public function fn()",
+            "declarationLine": "public function Foo::fn()",
             "documentation": "Foo",
             "signatureInformation": {
                 "label": "()",

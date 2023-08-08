@@ -37,7 +37,7 @@
                 "containerName": "TestNamespace8"
             },
             "type": null,
-            "declarationLine": "class PromotedProperties {",
+            "declarationLine": "namespace TestNamespace8;\n\nclass PromotedProperties {",
             "documentation": null,
             "signatureInformation": null
         },
@@ -58,7 +58,7 @@
             },
             "type__tostring": "mixed",
             "type": {},
-            "declarationLine": "public function __construct( public $untyped, public string $name = 'Damjan', )",
+            "declarationLine": "public function TestNamespace8\\PromotedProperties::__construct( public $untyped, public string $name = 'Damjan', )",
             "documentation": null,
             "signatureInformation": {
                 "label": "(mixed $untyped, string $name = 'Damjan')",
@@ -89,7 +89,7 @@
             },
             "type__tostring": "mixed",
             "type": {},
-            "declarationLine": "public $untyped",
+            "declarationLine": "property mixed $untyped",
             "documentation": null,
             "signatureInformation": null
         },
@@ -110,7 +110,7 @@
             },
             "type__tostring": "string",
             "type": {},
-            "declarationLine": "public string $name = 'Damjan'",
+            "declarationLine": "property string $name",
             "documentation": null,
             "signatureInformation": null
         }

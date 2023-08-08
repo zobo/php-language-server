@@ -38,7 +38,7 @@
             },
             "type__tostring": "array<string,bool>",
             "type": {},
-            "declarationLine": "protected $foo;",
+            "declarationLine": "property array<string,bool> $foo",
             "documentation": null,
             "signatureInformation": null
         }

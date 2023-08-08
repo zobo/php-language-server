@@ -52,7 +52,7 @@
                 "containerName": "Fixtures\\Prophecy"
             },
             "type": null,
-            "declarationLine": "class WithReturnTypehints extends EmptyClass",
+            "declarationLine": "namespace Fixtures\\Prophecy;\n\nclass WithReturnTypehints extends EmptyClass",
             "documentation": null,
             "signatureInformation": null
         },
@@ -73,7 +73,7 @@
             },
             "type__tostring": "\\Fixtures\\Prophecy\\WithReturnTypehints",
             "type": {},
-            "declarationLine": "public function getSelf(): self",
+            "declarationLine": "public function Fixtures\\Prophecy\\WithReturnTypehints::getSelf(): self",
             "documentation": null,
             "signatureInformation": {
                 "label": "()",
@@ -97,7 +97,7 @@
             },
             "type__tostring": "string",
             "type": {},
-            "declarationLine": "public function getName(): string",
+            "declarationLine": "public function Fixtures\\Prophecy\\WithReturnTypehints::getName(): string",
             "documentation": null,
             "signatureInformation": {
                 "label": "()",
@@ -121,7 +121,7 @@
             },
             "type__tostring": "\\Fixtures\\Prophecy\\EmptyClass",
             "type": {},
-            "declarationLine": "public function getParent(): parent",
+            "declarationLine": "public function Fixtures\\Prophecy\\WithReturnTypehints::getParent(): parent",
             "documentation": null,
             "signatureInformation": {
                 "label": "()",
@@ -145,7 +145,7 @@
             },
             "type__tostring": "static",
             "type": {},
-            "declarationLine": "public function getStatic(): static",
+            "declarationLine": "public function Fixtures\\Prophecy\\WithReturnTypehints::getStatic(): static",
             "documentation": null,
             "signatureInformation": {
                 "label": "()",

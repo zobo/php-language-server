@@ -51,7 +51,7 @@
             },
             "type__tostring": "\\TestClass[]",
             "type": {},
-            "declarationLine": "public static $testProperty;",
+            "declarationLine": "property \\TestClass[] $testProperty",
             "documentation": "Lorem excepteur officia sit anim velit veniam enim.",
             "signatureInformation": null
         }

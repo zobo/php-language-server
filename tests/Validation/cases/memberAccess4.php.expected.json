@@ -50,7 +50,7 @@
                 "containerName": "MyNamespace"
             },
             "type": null,
-            "declarationLine": "class A {",
+            "declarationLine": "namespace MyNamespace;\n\nclass A {",
             "documentation": null,
             "signatureInformation": null
         },
@@ -71,7 +71,7 @@
             },
             "type__tostring": "mixed",
             "type": {},
-            "declarationLine": "public function testRequest()",
+            "declarationLine": "public function MyNamespace\\A::testRequest()",
             "documentation": null,
             "signatureInformation": {
                 "label": "()",

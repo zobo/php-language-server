@@ -6,6 +6,7 @@ namespace LanguageServer;
 use LanguageServer\Index\ReadableIndex;
 use LanguageServer\Factory\SymbolInformationFactory;
 use LanguageServerProtocol\SymbolInformation;
+use LanguageServerProtocol\SymbolKind;
 use Microsoft\PhpParser;
 use Microsoft\PhpParser\Node;
 use Microsoft\PhpParser\FunctionLike;
@@ -58,10 +59,45 @@ class DefinitionResolver
      * Builds the declaration line for a given node. Declarations with multiple lines are trimmed.
      *
      * @param Node $node
+     * @param SymbolInformation|null $symbolInformation
+     * @param Type|null $type
      * @return string
      */
-    public function getDeclarationLineFromNode($node): string
+    public function getDeclarationLineFromNode($node, $symbolInformation, $type): string
     {
+        if ($symbolInformation !== null) {
+            if ($symbolInformation->kind === SymbolKind::VARIABLE) {
+                $defLine = 'var ';
+                if ($type !== null) {
+                    $defLine .= (string)$type . ' ';
+                }
+                $defLine .= '$' . $symbolInformation->name;
+                return $defLine;
+            } elseif ($symbolInformation->kind === SymbolKind::CONSTANT) {
+                $defLine = 'const ';
+                if ($type !== null) {
+                    $defLine .= (string)$type . ' ';
+                }
+                $defLine .= $symbolInformation->name;
+                return $defLine;
+            } elseif ($symbolInformation->kind === SymbolKind::INTERFACE) {
+                $defLine = 'interface ';
+                $defLine .= $symbolInformation->name;
+
+                $namespaceNode = $node->getNamespaceDefinition();
+                if ($namespaceNode !== null) {
+                    $defLine = $namespaceNode->getText() . "\n\n" . $defLine;
+                }
+                return $defLine;
+            } elseif ($symbolInformation->kind === SymbolKind::PROPERTY) {
+                $defLine = 'property ';
+                if ($type !== null) {
+                    $defLine .= (string)$type . ' ';
+                }
+                $defLine .= '$' . $symbolInformation->name;
+                return $defLine;
+            }
+        }
         // If node is part of a declaration list, build a declaration line that discludes other elements in the list
         //  - [PropertyDeclaration] // public $a, [$b = 3], $c; => public $b = 3;
         //  - [ConstDeclaration|ClassConstDeclaration] // "const A = 3, [B = 4];" => "const B = 4;"
@@ -86,6 +122,22 @@ class DefinitionResolver
             // cut at body start and replace all newlines
             $defLine = \str_replace(["\n", "\r"], " ", \strtok($defLine, "{"));
             $defLine = \preg_replace('!\s+!', " ", \trim($defLine));
+
+            if ($node instanceof Node\MethodDeclaration) {
+                $classNode = $node->getFirstAncestor(Node\Statement\ClassDeclaration::class, Node\Statement\InterfaceDeclaration::class, Node\Statement\TraitDeclaration::class);
+                if ($classNode !== null) {
+                    $fqn = (string)$classNode->getNamespacedName();
+                    if ($fqn) {
+                        $defLine = str_replace('function ', 'function ' . $fqn . '::', $defLine);
+                    }
+                }
+            }
+        } elseif ($node instanceof Node\Statement\ClassDeclaration) {
+            $defLine = \rtrim(\strtok($defLine, "\n"), "\r");
+            $namespaceNode = $node->getNamespaceDefinition();
+            if ($namespaceNode !== null) {
+                $defLine = $namespaceNode->getText() . "\n\n" . $defLine;
+            }
         } else {
             // Trim string to only include first line
             $defLine = \rtrim(\strtok($defLine, "\n"), "\r");
@@ -250,11 +302,13 @@ class DefinitionResolver
             }
         }
 
+        // TODO add also @method doc entries
+
         $def->symbolInformation = SymbolInformationFactory::fromNode($node, $fqn);
 
         if ($def->symbolInformation !== null) {
             $def->type = $this->getTypeFromNode($node);
-            $def->declarationLine = $this->getDeclarationLineFromNode($node);
+            $def->declarationLine = $this->getDeclarationLineFromNode($node, $def->symbolInformation, $def->type);
             $def->documentation = $this->getDocumentationFromNode($node);
         }
 
@@ -719,6 +773,15 @@ class DefinitionResolver
             ($n instanceof Node\ForeachValue || $n instanceof Node\ForeachKey)
             && $n->expression instanceof Node\Expression\Variable
             && $n->expression->getName() === $name
+        ) {
+            return true;
+        }
+
+        if (
+            $n instanceof Node\Expression\Variable &&
+            $n->getName() === $name &&
+            $n->parent != null && $n->parent->parent != null &&
+            $n->parent->parent->parent instanceof Node\Expression\ListIntrinsicExpression
         ) {
             return true;
         }
@@ -1271,6 +1334,16 @@ class DefinitionResolver
             if ($collectionType instanceof Types\Array_) {
                 return $collectionType->getValueType();
             }
+            return new Types\Mixed_();
+        }
+
+        // LIST DECLARATION
+        if (
+            $node instanceof Node\Expression\Variable &&
+            $node->parent != null && $node->parent->parent != null &&
+            $node->parent->parent->parent instanceof Node\Expression\ListIntrinsicExpression
+        ) {
+            // TODO implement actual list type from right side assignment
             return new Types\Mixed_();
         }
 
